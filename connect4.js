@@ -16,12 +16,12 @@ class Game {
     this.HEIGHT = HEIGHT;
     this.WIDTH = WIDTH;
     this.board = [];
-    this.currPlayer = 1; //TODO: double check that currPlayer should be here
+    this.currPlayer = 1; 
 
     this.makeBoard(); 
     this.makeHtmlBoard();
   }
- 
+
 
 /** makeBoard: create in-JS board structure:
  *   board = array of rows, each row is array of cells  (board[y][x])
@@ -91,6 +91,8 @@ placeInTable(y, x) {
 
 endGame(msg) {
   alert(msg);
+  const top = document.getElementById("column-top");
+  top.removeEventListener('click', this.handleClick); 
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -143,7 +145,7 @@ checkForWin() {
     );
   }
 
-  // let _winBound = _win.bind(this);
+  // let _winBound = _win.bind(this); //replace -win to -winBound
 
   for (let y = 0; y < this.HEIGHT; y++) {
     for (let x = 0; x < this.WIDTH; x++) {
@@ -155,20 +157,30 @@ checkForWin() {
       const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
       // find winner (only checking each win-possibility as needed)
-      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) { //replace -win to -winBound
+      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) { 
         return true;
       }
     }
   }
 
-  // trying to do
-  // let newWin = this.checkForWin._win.bind(this.checkForWin);
 }
 
 
 }
 
-new Game(6, 7);
+const startBtn = document.getElementById("submit-btn");
+startBtn.addEventListener("click", () => {
+  const topRow = document.getElementById("column-top");
+  if (topRow !== undefined){
+    const table = document.getElementById("board");
+    table.innerHTML = "";
+    new Game(6, 7);
+
+  } else {
+    new Game(6, 7);
+  }
+});
+
 
 
 // let currPlayer = 1; // active player: 1 or 2
