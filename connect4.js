@@ -126,11 +126,13 @@ handleClick(evt) {
 }
 
 checkForWin() {
-  function _win(cells) {
+  console.log("this-HEIGHT:", this.HEIGHT);
+  
+  const _win = (cells) => {
     // Check four cells to see if they're all color of current player
     //  - cells: list of four (y, x) cells
     //  - returns true if all are legal coordinates & all match currPlayer
-
+    // console.log("this:", this);
     return cells.every(
       ([y, x]) =>
         y >= 0 &&
@@ -140,6 +142,8 @@ checkForWin() {
         this.board[y][x] === this.currPlayer
     );
   }
+
+  // let _winBound = _win.bind(this);
 
   for (let y = 0; y < this.HEIGHT; y++) {
     for (let x = 0; x < this.WIDTH; x++) {
@@ -151,11 +155,14 @@ checkForWin() {
       const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
       // find winner (only checking each win-possibility as needed)
-      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) { //replace -win to -winBound
         return true;
       }
     }
   }
+
+  // trying to do
+  // let newWin = this.checkForWin._win.bind(this.checkForWin);
 }
 
 
