@@ -16,8 +16,12 @@ class Game {
     this.HEIGHT = HEIGHT;
     this.WIDTH = WIDTH;
     this.board = [];
+    this.currPlayer = 1; //TODO: double check that currPlayer should be here
+
+    this.makeBoard(); 
+    this.makeHtmlBoard();
   }
-  currPlayer : 1; //TODO: revisit this variable and value
+ 
 
 /** makeBoard: create in-JS board structure:
  *   board = array of rows, each row is array of cells  (board[y][x])
@@ -35,7 +39,8 @@ class Game {
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', handleClick);
+    top.addEventListener('click', this.handleClick.bind(this)); 
+    //when called, always on this game >>JS will call
   
     for (let x = 0; x < this.WIDTH; x++) {
       const headCell = document.createElement('td');
@@ -91,11 +96,13 @@ endGame(msg) {
 /** handleClick: handle click of column top to play piece */
 
 handleClick(evt) {
+
+  console.log("We're in handle click and this = ", this);
   // get x from ID of clicked cell
   const x = +evt.target.id;
 
   // get next spot in column (if none, ignore click)
-  const y = findSpotForCol(x);
+  const y = this.findSpotForCol(x);
   if (y === null) {
     return;
   }
@@ -105,7 +112,7 @@ handleClick(evt) {
   this.placeInTable(y, x);
   
   // check for win
-  if (checkForWin()) {
+  if (this.checkForWin()) {
     return this.endGame(`Player ${this.currPlayer} won!`);
   }
   
@@ -129,7 +136,7 @@ checkForWin() {
         y >= 0 &&
         y < this.HEIGHT &&
         x >= 0 &&
-        x < this,WIDTH &&
+        x < this.WIDTH &&
         this.board[y][x] === this.currPlayer
     );
   }
@@ -151,11 +158,10 @@ checkForWin() {
   }
 }
 
-makeBoard();
-makeHtmlBoard();
+
 }
 
-newGame(6, 7);
+new Game(6, 7);
 
 
 // let currPlayer = 1; // active player: 1 or 2
